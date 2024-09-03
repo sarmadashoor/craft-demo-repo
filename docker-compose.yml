@@ -15,7 +15,7 @@ services:
       - my_project_network
 
   mongo:
-    build: ./mongo
+    build: ./mongo/mongo
     ports:
       - "27017:27017"
     volumes:
@@ -25,7 +25,7 @@ services:
 
   django:
     build: ./django
-    command: ["./scripts/wait-for-it.sh", "${DJANGO_DB:-postgres}:${DJANGO_DB_PORT:-5432}", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./wait-for-it.sh", "${DJANGO_DB:-postgres}:${DJANGO_DB_PORT:-5432}", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     volumes:
       - ./django:/app
       - ./scripts:/scripts
@@ -47,7 +47,7 @@ services:
 
   node:
     build: ./node
-    command: ["./scripts/wait-for-it.sh", "${NODE_DB:-mongo}:${NODE_DB_PORT:-27017}", "--", "npm", "start"]
+    command: ["./wait-for-it.sh", "${NODE_DB:-mongo}:${NODE_DB_PORT:-27017}", "--", "npm", "start"]
     volumes:
       - ./node:/app
       - ./scripts:/scripts
